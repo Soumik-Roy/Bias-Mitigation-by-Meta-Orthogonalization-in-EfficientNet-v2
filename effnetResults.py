@@ -123,3 +123,16 @@ plt.ylabel("Accuracy")
 plt.savefig("train_accuracies.png")
 clearPlots()
 # plt.show()
+
+
+test_stats1 = trainTestFunctions.test(model, test_loader, criterion)
+
+print("Test Loss: {:.2f}\nTest Accuracy: {:.2f}".format(test_stats1['loss'], test_stats1['accuracy']))
+
+# save the model
+torch.save(model.state_dict(), "results/effnetv2_s_cifar10.pth")
+
+# # load the model
+# model.load_state_dict(torch.load("results/effnetv2_s_cifar10.pth"))
+
+trainTestFunctions.plot_confusion_matrix(model, test_loader, list(output_classes.keys))

@@ -1,5 +1,10 @@
 from tqdm import tqdm
 import torch
+from sklearn.metrics import confusion_matrix
+import seaborn as sn
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
@@ -17,7 +22,7 @@ def train(model, trainloader, optimizer, criterion, epochs):
         corect_predictions = 0
         total_predictions = 0
 
-        for i, data in tqdm(enumerate(trainloader), desc=f"  Epoch{epoch} progress : "):
+        for i, data in enumerate(trainloader):
             inputs, labels = data
 
             inputs = inputs.to(device)
@@ -73,4 +78,32 @@ def test(model, testloader, criterion):
     test_acc = cor*100/total
 
     print('====> Test loss: {:.4f} acc: {:.4f}'.format(test_loss,test_acc))
-    return test_acc
+    return {
+        "test_loss" : test_loss,
+        "test_accuracy" : test_acc
+    }
+
+def plot_confusion_matrix(model, testloader, classes, saveFileName="confusion_matrix.png"):
+    y_pred = []
+    y_true = []
+    model.eval()
+
+    # iterate over test data
+    for inputs, labels in testloader:
+            inputs = inputs.to(device)
+            label = label.to(device)
+            pred = model(inputs)
+            _,pred_lb = pred.max(dim=1)
+
+            y_pred.extend(pred_lb.cpu().numpy()) # Save Prediction
+            
+            labels = labels.data.cpu().numpy()
+            y_true.extend(labels) # Save Truth
+
+    # Build confusion matrix
+    cf_matrix = confusion_matrix(y_true, y_pred)
+    df_cm = pd.DataFrame(cf_matrix / np.sum(cf_matrix, axis=1)[:, None], index = [i for i in classes],
+                        columns = [i for i in classes])
+    plt.figure(figsize = (12,7))
+    sn.heatmap(df_cm, annot=True)
+    plt.savefig(saveFileName)
