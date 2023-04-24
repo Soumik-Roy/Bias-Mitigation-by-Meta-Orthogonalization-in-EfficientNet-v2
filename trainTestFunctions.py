@@ -79,8 +79,8 @@ def test(model, testloader, criterion):
 
     print('====> Test loss: {:.4f} acc: {:.4f}'.format(test_loss,test_acc))
     return {
-        "test_loss" : test_loss,
-        "test_accuracy" : test_acc
+        "loss" : test_loss,
+        "accuracy" : test_acc
     }
 
 def plot_confusion_matrix(model, testloader, classes, saveFileName="confusion_matrix.png"):
@@ -91,7 +91,7 @@ def plot_confusion_matrix(model, testloader, classes, saveFileName="confusion_ma
     # iterate over test data
     for inputs, labels in testloader:
             inputs = inputs.to(device)
-            label = label.to(device)
+            labels = labels.to(device)
             pred = model(inputs)
             _,pred_lb = pred.max(dim=1)
 

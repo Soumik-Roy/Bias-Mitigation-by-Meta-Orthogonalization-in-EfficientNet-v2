@@ -135,4 +135,4 @@ torch.save(model.state_dict(), "results/effnetv2_s_cifar10.pth")
 # # load the model
 # model.load_state_dict(torch.load("results/effnetv2_s_cifar10.pth"))
 
-trainTestFunctions.plot_confusion_matrix(model, test_loader, list(output_classes.keys))
+trainTestFunctions.plot_confusion_matrix(model, test_loader, list(output_classes.keys()))
