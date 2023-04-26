@@ -8,7 +8,7 @@ You can find a detail description of all the tasks done in the report attached. 
 
 First navigate to the folder containing all code.
 
-Make sure you are on the HPC GPU (if you are in IIT Jodhpur) or atleast that in your sysyem, you have SLURM set up inorder to schedue the jobs on your GPU.
+Make sure you are on the HPC GPU (if you are in IIT Jodhpur) or atleast that in your system, you have SLURM set up inorder to schedue the jobs on your GPU.
 
 Then inorder to run the code, and reproduce all results run the below command : 
 ```sbatch batch_file1.sh```
